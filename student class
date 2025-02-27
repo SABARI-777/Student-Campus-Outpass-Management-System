@@ -1,0 +1,148 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Scanner;
+
+// ---------------------------------- STUDENT CLASS ----------------------------------
+class Student {
+    private String registrationNumber, fullName, department, studentMobile, parentMobile, homeTown, email, guardianName, homeAddress, dateOfBirth, bloodGroup, hostelBlock, roomNumber;
+
+    public Student(String registrationNumber, String fullName, String department, String studentMobile, String parentMobile, String homeTown, String email, String guardianName, String homeAddress, String dateOfBirth, String bloodGroup, String hostelBlock, String roomNumber) {
+        this.registrationNumber = registrationNumber;
+        this.fullName = fullName;
+        this.department = department;
+        this.studentMobile = studentMobile;
+        this.parentMobile = parentMobile;
+        this.homeTown = homeTown;
+        this.email = email;
+        this.guardianName = guardianName;
+        this.homeAddress = homeAddress;
+        this.dateOfBirth = dateOfBirth;
+        this.bloodGroup = bloodGroup;
+        this.hostelBlock = hostelBlock;
+        this.roomNumber = roomNumber;
+    }
+
+    public String getRegistrationNumber() { return registrationNumber; }
+    public String getFullName() { return fullName; }
+    public String getDepartment() { return department; }
+    public String getStudentMobile() { return studentMobile; }
+    public String getParentMobile() { return parentMobile; }
+    public String getHomeTown() { return homeTown; }
+    public String getEmail() { return email; }
+    public String getGuardianName() { return guardianName; }
+    public String getHomeAddress() { return homeAddress; }
+    public String getDateOfBirth() { return dateOfBirth; }
+    public String getBloodGroup() { return bloodGroup; }
+    public String getHostelBlock() { return hostelBlock; }
+    public String getRoomNumber() { return roomNumber; }
+}
+
+// ---------------------------------- OUT PASS CLASS ----------------------------------
+class OutPass {
+    private Student student;
+    private String purpose, departureDateTime, expectedReturnDateTime, actualOutDateTime, actualCheckInDateTime;
+    private String status, destinationAddress, modeOfTransport, reasonForLeave, emergencyContact;
+
+    public OutPass(Student student, String purpose, String departureDateTime, String expectedReturnDateTime, String destinationAddress, String modeOfTransport, String reasonForLeave, String emergencyContact) {
+        this.student = student;
+        this.purpose = purpose;
+        this.departureDateTime = departureDateTime;
+        this.expectedReturnDateTime = expectedReturnDateTime;
+        this.destinationAddress = destinationAddress;
+        this.modeOfTransport = modeOfTransport;
+        this.reasonForLeave = reasonForLeave;
+        this.emergencyContact = emergencyContact;
+        this.actualOutDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.status = "Checked Out";
+    }
+
+    public void checkIn() {
+        this.actualCheckInDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.status = "Checked In";
+        sendAlert();
+    }
+
+    private void sendAlert() {
+        System.out.println("\n[ALERT] " + student.getFullName() + " has checked back into campus.");
+        System.out.println("Message sent to Parent: " + student.getParentMobile());
+        System.out.println("Emergency Contact Notified: " + emergencyContact);
+    }
+
+    public String getStatus() { return status; }
+    public String getActualCheckInDateTime() { return actualCheckInDateTime; }
+    public Student getStudent() { return student; }
+}
+
+// ---------------------------------- SYSTEM CLASS ----------------------------------
+class StudentOutPassSystem {
+    private HashMap<String, Student> studentDatabase = new HashMap<>();
+    private HashMap<String, OutPass> outPassDatabase = new HashMap<>();
+    private Scanner scanner = new Scanner(System.in);
+
+    public void registerStudent(Student student) {
+        studentDatabase.put(student.getRegistrationNumber(), student);
+        System.out.println("\nSTUDENT REGISTERED SUCCESSFULLY!");
+    }
+
+    public void issueOutPass(String registrationNumber, String purpose, String departureDateTime, String expectedReturnDateTime, String destinationAddress, String modeOfTransport, String reasonForLeave, String emergencyContact) {
+        Student student = studentDatabase.get(registrationNumber);
+        if (student == null) {
+            System.out.println("\n[ERROR] Student not found!");
+            return;
+        }
+        OutPass outPass = new OutPass(student, purpose, departureDateTime, expectedReturnDateTime, destinationAddress, modeOfTransport, reasonForLeave, emergencyContact);
+        outPassDatabase.put(registrationNumber, outPass);
+        System.out.println("\nOUT PASS ISSUED SUCCESSFULLY!");
+    }
+
+    public void checkInStudent(String registrationNumber) {
+        OutPass outPass = outPassDatabase.get(registrationNumber);
+        if (outPass == null || !outPass.getStatus().equals("Checked Out")) {
+            System.out.println("\n[ERROR] No active out pass found or already checked in!");
+            return;
+        }
+        outPass.checkIn();
+        System.out.println("\nCHECK-IN SUCCESSFUL!");
+    }
+
+    public void viewStudentDetails(String registrationNumber) {
+        Student student = studentDatabase.get(registrationNumber);
+        if (student != null) {
+            System.out.println("\nSTUDENT DETAILS:");
+            System.out.println("Name: " + student.getFullName());
+            System.out.println("Department: " + student.getDepartment());
+        } else {
+            System.out.println("Student not found!");
+        }
+    }
+}
+
+// ---------------------------------- MAIN CLASS ----------------------------------
+public class StudentOutPassMain {
+    public static void main(String[] args) {
+        StudentOutPassSystem system = new StudentOutPassSystem();
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\n==================================");
+            System.out.println("STUDENT OUT PASS SYSTEM");
+            System.out.println("==================================");
+            System.out.println("1. Register Student");
+            System.out.println("2. Issue Out Pass");
+            System.out.println("3. Check-In Student");
+            System.out.println("4. View Student Details");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            if (choice == 5) {
+                System.out.println("Exiting... Thank you!");
+                break;
+            }
+            System.out.print("Enter Registration Number: ");
+            String regNum = scanner.nextLine();
+            system.viewStudentDetails(regNum);
+        }
+    }
+}
