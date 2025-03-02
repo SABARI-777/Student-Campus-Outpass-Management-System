@@ -66,56 +66,56 @@ class Student {
 }
 
 class OutPass {
-    String rollNumber, outPassNumber, outDate, outTime, reason, status, inDate, inTime;
-    boolean advisorApproved, hodApproved, wardenApproved, securityGate1Approved, securityGate2Approved;
-    boolean placementCoordinatorApproved, placementHeadApproved; // New fields for placement approvals
-    String advisorSignature, hodSignature, wardenSignature, securityGate1Signature, securityGate2Signature;
-    String placementCoordinatorSignature, placementHeadSignature; // New fields for placement signatures
+    String rollNumber, outPassNumber, outDate, returnDate, outTime, reason, status, inDate, inTime;
+    boolean advisorApproved, placementCoordinatorApproved, placementHeadApproved, hodApproved, wardenApproved, securityGate1Approved, securityGate2Approved;
+    String advisorSignature, placementCoordinatorSignature, placementHeadSignature, hodSignature, wardenSignature, securityGate1Signature, securityGate2Signature;
 
-    OutPass(String rollNumber, String outPassNumber, String outDate, String outTime,
+    OutPass(String rollNumber, String outPassNumber, String outDate, String returnDate, String outTime,
             String reason, String status, String inDate, String inTime) {
         this.rollNumber = rollNumber;
         this.outPassNumber = outPassNumber;
         this.outDate = outDate;
+        this.returnDate = returnDate;
         this.outTime = outTime;
         this.reason = reason;
         this.status = status;
         this.inDate = inDate;
         this.inTime = inTime;
         this.advisorApproved = false;
+        this.placementCoordinatorApproved = false;
+        this.placementHeadApproved = false;
         this.hodApproved = false;
         this.wardenApproved = false;
         this.securityGate1Approved = false;
         this.securityGate2Approved = false;
-        this.placementCoordinatorApproved = false;
-        this.placementHeadApproved = false;
     }
 
     // Display OutPass Details
     public void displayOutPass() {
-        System.out.println("\n╔════════════════════════════════════════════════════════════════════════════════════╗");
-        System.out.println("║           OUTPASS DETAILS                                                            ║");
-        System.out.println("╠══════════════════════════════════════════════════════════════════════════════════════╣");
-        System.out.println("  ║ OutPass No.    :"  + outPassNumber);
-        System.out.println("  ║ Roll Number    : " + rollNumber); 
-        System.out.println("  ║ Date           : " + outDate);
-        System.out.println("  ║ Time           : " + outTime);
-        System.out.println("  ║ Reason         : " + reason);
-        System.out.println("  ║ Status         : " + status);
-        System.out.println("  ║ Advisor Approved: " + (advisorApproved ? "Yes" : "No"));
-        System.out.println("  ║ HOD Approved   : " + (hodApproved ? "Yes" : "No"));
-        System.out.println("  ║ Warden Approved: " + (wardenApproved ? "Yes" : "No"));
-        System.out.println("  ║ Placement Coordinator Approved: "+(placementCoordinatorApproved ? "Yes":"No"));
-        System.out.println("  ║ Placement Head Approved: " + (placementHeadApproved ? "Yes" : "No"));
-        System.out.println("  ║ Security Gate 1 Approved: " + (securityGate1Approved ? "Yes" : "No"));
-        System.out.println("  ║ Security Gate 2 Approved: " + (securityGate2Approved ? "Yes" : "No"));
-        System.out.println("  ║ In Date        : " + inDate);
-        System.out.println("  ║ In Time        : " + inTime);
-        System.out.println("╚════════════════════════════════════════════════════════════════════════════════════╝\n");
+        System.out.println("\n╔══════════════════════════════════════════╗");
+        System.out.println("║           OUTPASS DETAILS               ║");
+        System.out.println("╠══════════════════════════════════════════╣");
+        System.out.println("║ OutPass No.    : " + outPassNumber);
+        System.out.println("║ Roll Number    : " + rollNumber);
+        System.out.println("║ Out Date       : " + outDate);
+        System.out.println("║ Return Date    : " + returnDate);
+        System.out.println("║ Out Time       : " + outTime);
+        System.out.println("║ Reason         : " + reason);
+        System.out.println("║ Status         : " + status);
+        System.out.println("║ Advisor Approved: " + (advisorApproved ? "Yes" : "No"));
+        System.out.println("║ Placement Coordinator Approved: " + (placementCoordinatorApproved ? "Yes" : "No"));
+        System.out.println("║ Placement Head Approved: " + (placementHeadApproved ? "Yes" : "No"));
+        System.out.println("║ HOD Approved   : " + (hodApproved ? "Yes" : "No"));
+        System.out.println("║ Warden Approved: " + (wardenApproved ? "Yes" : "No"));
+        System.out.println("║ Security Gate 1 Approved: " + (securityGate1Approved ? "Yes" : "No"));
+        System.out.println("║ Security Gate 2 Approved: " + (securityGate2Approved ? "Yes" : "No"));
+        System.out.println("║ In Date        : " + inDate);
+        System.out.println("║ In Time        : " + inTime);
+        System.out.println("╚══════════════════════════════════════════╝\n");
     }
 }
 
-public class outpSS {
+public class OutPassManagementSystem {
     static Scanner sc = new Scanner(System.in);
     static ArrayList<Student> students = new ArrayList<>();
     static ArrayList<OutPass> outPasses = new ArrayList<>();
@@ -241,12 +241,15 @@ public class outpSS {
         String roll = sc.nextLine();
         System.out.print("Reason: ");
         String reason = sc.nextLine();
+        System.out.print("Out Date (YYYY-MM-DD): ");
+        String outDate = sc.nextLine();
+        System.out.print("Return Date (YYYY-MM-DD): ");
+        String returnDate = sc.nextLine();
 
-        // Get current date and time
-        String currentDate = LocalDate.now().toString();
+        // Get current time
         String currentTime = LocalTime.now().toString().substring(0, 5); // HH:MM format
 
-        outPasses.add(new OutPass(roll, "OP-" + (outPasses.size() + 1), currentDate, currentTime, reason, "Pending", "", ""));
+        outPasses.add(new OutPass(roll, "OP-" + (outPasses.size() + 1), outDate, returnDate, currentTime, reason, "Pending", "", ""));
         System.out.println("✅ OutPass Request Submitted!");
     }
 
@@ -442,7 +445,7 @@ public class outpSS {
                     System.out.println("✅ Check-In Recorded!");
 
                     // Check if the return date is delayed
-                    if (!o.inDate.equals(o.outDate)) {
+                    if (!o.inDate.equals(o.returnDate)) {
                         System.out.println("⚠️ Return Date Delayed! Informing Advisor, Parents, and Others...");
                         // Notify advisor, parents, and others (you can add more logic here)
                         System.out.println("✅ Notifications Sent!");
