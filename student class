@@ -2,17 +2,18 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 class Student {
-    // Student attributes
-    String studentName, rollNumber, registerNumber, department, year, section, attendancePercentage, gender;
+    String studentName, rollNumber, registerNumber, department, year, section, gender;
     String advisorName, studentMail, officialMail, studentContact, parentContact;
     int dateOfBirth;
+    double cgpa;
+    int attendancePercentage;
+    int outpassDaysTaken;
 
-    // Constructor to initialize student details
-    Student(String studentName, String rollNumber, String registerNumber, String department, int dateOfBirth, 
-            String year, String section, String attendancePercentage, String gender, 
-            String advisorName, String studentMail, String officialMail, 
+    Student(String studentName, String rollNumber, String registerNumber, String department, int dateOfBirth,
+            String year, String section, int attendancePercentage, String gender, double cgpa,
+            String advisorName, String studentMail, String officialMail,
             String studentContact, String parentContact) {
-        
+
         this.studentName = studentName;
         this.rollNumber = rollNumber;
         this.registerNumber = registerNumber;
@@ -22,55 +23,45 @@ class Student {
         this.section = section;
         this.attendancePercentage = attendancePercentage;
         this.gender = gender;
+        this.cgpa = cgpa;
         this.advisorName = advisorName;
         this.studentMail = studentMail;
         this.officialMail = officialMail;
         this.studentContact = studentContact;
         this.parentContact = parentContact;
+        this.outpassDaysTaken = 0;
     }
 
-    // Method to display student details
+    // Display student details
     public void displayDetails() {
-        System.out.println("\n==========================================");
-        System.out.println("           STUDENT DETAILS                ");
-        System.out.println("==========================================");
-        System.out.println("Name           : " + studentName);
-        System.out.println("Roll Number    : " + rollNumber);
-        System.out.println("Register Number: " + registerNumber);
-        System.out.println("Department     : " + department);
-        System.out.println("DOB            : " + dateOfBirth);
-        System.out.println("Year           : " + year);
-        System.out.println("Section        : " + section);
-        System.out.println("Attendance     : " + attendancePercentage);
-        System.out.println("Gender         : " + gender);
-        System.out.println("Advisor        : " + advisorName);
-        System.out.println("Student Mail   : " + studentMail);
-        System.out.println("Official Mail  : " + officialMail);
-        System.out.println("Student Contact: " + studentContact);
-        System.out.println("Parent Contact : " + parentContact);
-        System.out.println("==========================================\n");
-    }
-
-    // Method to update student details
-    public void updateDetails() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("\nEnter New Student Name: ");
-        this.studentName = sc.nextLine();
-        System.out.print("Enter New Student Contact: ");
-        this.studentContact = sc.nextLine();
-        System.out.print("Enter New Parent Contact: ");
-        this.parentContact = sc.nextLine();
-        System.out.println("✅ Student Details Updated Successfully!\n");
+        System.out.println("\n╔══════════════════════════════════════════╗");
+        System.out.println("║           STUDENT DETAILS                ║");
+        System.out.println("╠══════════════════════════════════════════╣");
+        System.out.println("║ Name           : " + studentName);
+        System.out.println("║ Roll Number    : " + rollNumber);
+        System.out.println("║ Register Number: " + registerNumber);
+        System.out.println("║ Department     : " + department);
+        System.out.println("║ DOB            : " + dateOfBirth);
+        System.out.println("║ Year           : " + year);
+        System.out.println("║ Section        : " + section);
+        System.out.println("║ Attendance     : " + attendancePercentage + "%");
+        System.out.println("║ CGPA           : " + cgpa);
+        System.out.println("║ Gender         : " + gender);
+        System.out.println("║ Advisor        : " + advisorName);
+        System.out.println("║ Student Mail   : " + studentMail);
+        System.out.println("║ Official Mail  : " + officialMail);
+        System.out.println("║ Student Contact: " + studentContact);
+        System.out.println("║ Parent Contact : " + parentContact);
+        System.out.println("║ OutPass Days   : " + outpassDaysTaken);
+        System.out.println("╚══════════════════════════════════════════╝\n");
     }
 }
 
-// OutPass Class
 class OutPass {
-    // OutPass attributes
     String rollNumber, outPassNumber, outDate, outTime, reason, status, inDate, inTime;
+    boolean advisorApproved, hodApproved, wardenApproved;
 
-    // Constructor to initialize OutPass details
-    OutPass(String rollNumber, String outPassNumber, String outDate, String outTime, 
+    OutPass(String rollNumber, String outPassNumber, String outDate, String outTime,
             String reason, String status, String inDate, String inTime) {
         this.rollNumber = rollNumber;
         this.outPassNumber = outPassNumber;
@@ -80,26 +71,31 @@ class OutPass {
         this.status = status;
         this.inDate = inDate;
         this.inTime = inTime;
+        this.advisorApproved = false;
+        this.hodApproved = false;
+        this.wardenApproved = false;
     }
 
-    // Method to display OutPass details
+    // Display OutPass Details
     public void displayOutPass() {
-        System.out.println("\n==========================================");
-        System.out.println("           OUTPASS DETAILS                 ");
-        System.out.println("==========================================");
-        System.out.println("OutPass No.    : " + outPassNumber);
-        System.out.println("Roll Number    : " + rollNumber);
-        System.out.println("Date           : " + outDate);
-        System.out.println("Time           : " + outTime);
-        System.out.println("Reason         : " + reason);
-        System.out.println("Status         : " + status);
-        System.out.println("In Date        : " + inDate);
-        System.out.println("In Time        : " + inTime);
-        System.out.println("==========================================\n");
+        System.out.println("\n╔══════════════════════════════════════════╗");
+        System.out.println("║           OUTPASS DETAILS               ║");
+        System.out.println("╠══════════════════════════════════════════╣");
+        System.out.println("║ OutPass No.    : " + outPassNumber);
+        System.out.println("║ Roll Number    : " + rollNumber);
+        System.out.println("║ Date           : " + outDate);
+        System.out.println("║ Time           : " + outTime);
+        System.out.println("║ Reason         : " + reason);
+        System.out.println("║ Status         : " + status);
+        System.out.println("║ Advisor Approved: " + (advisorApproved ? "Yes" : "No"));
+        System.out.println("║ HOD Approved   : " + (hodApproved ? "Yes" : "No"));
+        System.out.println("║ Warden Approved: " + (wardenApproved ? "Yes" : "No"));
+        System.out.println("║ In Date        : " + inDate);
+        System.out.println("║ In Time        : " + inTime);
+        System.out.println("╚══════════════════════════════════════════╝\n");
     }
 }
 
-// Main class for the OutPass Management System
 public class outpSS {
     static Scanner sc = new Scanner(System.in);
     static ArrayList<Student> students = new ArrayList<>();
@@ -107,19 +103,21 @@ public class outpSS {
 
     public static void main(String[] args) {
         while (true) {
-            System.out.println("\n==========================================");
-            System.out.println("      🏫 STUDENT OUTPASS MANAGEMENT SYSTEM 🏫");
-            System.out.println("==========================================");
-            System.out.println("1️⃣  ➜ Register Student");
-            System.out.println("2️⃣  ➜ Update Student Details");
-            System.out.println("3️⃣  ➜ View Student Details");
-            System.out.println("4️⃣  ➜ Apply for OutPass");
-            System.out.println("5️⃣  ➜ Approve OutPass");
-            System.out.println("6️⃣  ➜ View OutPass Details");
-            System.out.println("7️⃣  ➜ Exit");
-            System.out.println("==========================================");
+            System.out.println("\n╔══════════════════════════════════════════╗");
+            System.out.println("║ 🏫 STUDENT OUTPASS MANAGEMENT SYSTEM 🏫 ║");
+            System.out.println("╠══════════════════════════════════════════╣");
+            System.out.println("║ 1️⃣  ➜ Register Student                  ║");
+            System.out.println("║ 2️⃣  ➜ Apply for OutPass                 ║");
+            System.out.println("║ 3️⃣  ➜ Advisor Approval                  ║");
+            System.out.println("║ 4️⃣  ➜ HOD Approval                     ║");
+            System.out.println("║ 5️⃣  ➜ Warden Approval                  ║");
+            System.out.println("║ 6️⃣  ➜ Check-In/Check-Out               ║");
+            System.out.println("║ 7️⃣  ➜ View Student Details             ║");
+            System.out.println("║ 8️⃣  ➜ View OutPass Details             ║");
+            System.out.println("║ 9️⃣  ➜ Exit                             ║");
+            System.out.println("╚══════════════════════════════════════════╝");
             System.out.print("🔹 Enter your choice: ");
-            
+
             int choice = sc.nextInt();
             sc.nextLine();
 
@@ -128,22 +126,27 @@ public class outpSS {
                     registerStudent();
                     break;
                 case 2:
-                    updateStudent();
-                    break;
-                case 3:
-                    viewStudent();
-                    break;
-                case 4:
                     applyOutPass();
                     break;
+                case 3:
+                    advisorApproval();
+                    break;
+                case 4:
+                    hodApproval();
+                    break;
                 case 5:
-                    approveOutPass();
+                    wardenApproval();
                     break;
                 case 6:
-                    System.out.println("\n🔹 OutPass Details 🔹");
-                    viewOutPass();
+                    checkInCheckOut();
                     break;
                 case 7:
+                    viewStudent();
+                    break;
+                case 8:
+                    viewOutPass();
+                    break;
+                case 9:
                     System.out.println("✅ Exiting the system... Have a great day!");
                     return;
                 default:
@@ -171,7 +174,11 @@ public class outpSS {
         System.out.print("Section: ");
         String section = sc.nextLine();
         System.out.print("Attendance Percentage: ");
-        String attendance = sc.nextLine();
+        int attendance = sc.nextInt();
+        sc.nextLine();
+        System.out.print("CGPA: ");
+        double cgpa = sc.nextDouble();
+        sc.nextLine();
         System.out.print("Gender: ");
         String gender = sc.nextLine();
         System.out.print("Advisor Name: ");
@@ -185,22 +192,114 @@ public class outpSS {
         System.out.print("Parent Contact: ");
         String parentContact = sc.nextLine();
 
-        students.add(new Student(name, rollNumber, registerNumber, department, dob, year, section, attendance, gender, advisor, studentMail, officialMail, studentContact, parentContact));
+        students.add(new Student(name, rollNumber, registerNumber, department, dob, year, section, attendance, gender, cgpa, advisor, studentMail, officialMail, studentContact, parentContact));
         System.out.println("✅ Student Registered Successfully!\n");
     }
 
-    // Method to update student details
-    public static void updateStudent() {
-        System.out.print("\n🔹 Enter Roll Number to Update: ");
+    // Method to apply for an OutPass
+    public static void applyOutPass() {
+        System.out.print("\n🔹 Enter Roll Number: ");
         String roll = sc.nextLine();
+        System.out.print("Reason: ");
+        String reason = sc.nextLine();
 
-        for (Student s : students) {
-            if (s.rollNumber.equals(roll)) {
-                s.updateDetails();
+        outPasses.add(new OutPass(roll, "OP-" + (outPasses.size() + 1), "2025-03-02", "10:00 AM", reason, "Pending", "", ""));
+        System.out.println("✅ OutPass Request Submitted!");
+    }
+
+    // Method for Advisor Approval
+    public static void advisorApproval() {
+        System.out.print("\n🔹 Enter OutPass Number to Approve: ");
+        String passNum = sc.nextLine();
+
+        for (OutPass o : outPasses) {
+            if (o.outPassNumber.equals(passNum)) {
+                System.out.print("Call Parent for Permission (Yes/No): ");
+                String permission = sc.nextLine();
+                if (permission.equalsIgnoreCase("Yes")) {
+                    o.advisorApproved = true;
+                    o.status = "Advisor Approved";
+                    System.out.println("✅ Advisor Approved!");
+                } else {
+                    System.out.println("❌ Parent Permission Denied!");
+                }
                 return;
             }
         }
-        System.out.println("❌ Student Not Found!");
+        System.out.println("❌ OutPass Not Found!");
+    }
+
+    // Method for HOD Approval
+    public static void hodApproval() {
+        System.out.print("\n🔹 Enter OutPass Number to Approve: ");
+        String passNum = sc.nextLine();
+
+        for (OutPass o : outPasses) {
+            if (o.outPassNumber.equals(passNum)) {
+                if (o.advisorApproved) {
+                    System.out.print("Enter CGPA: ");
+                    double cgpa = sc.nextDouble();
+                    System.out.print("Enter Attendance: ");
+                    int attendance = sc.nextInt();
+                    sc.nextLine();
+
+                    if (cgpa >= 7.5 && attendance >= 75) {
+                        o.hodApproved = true;
+                        o.status = "HOD Approved";
+                        System.out.println("✅ HOD Approved!");
+                    } else {
+                        System.out.println("❌ CGPA or Attendance Criteria Not Met!");
+                    }
+                } else {
+                    System.out.println("❌ Advisor Approval Pending!");
+                }
+                return;
+            }
+        }
+        System.out.println("❌ OutPass Not Found!");
+    }
+
+    // Method for Warden Approval
+    public static void wardenApproval() {
+        System.out.print("\n🔹 Enter OutPass Number to Approve: ");
+        String passNum = sc.nextLine();
+
+        for (OutPass o : outPasses) {
+            if (o.outPassNumber.equals(passNum)) {
+                if (o.hodApproved) {
+                    o.wardenApproved = true;
+                    o.status = "Warden Approved";
+                    System.out.println("✅ Warden Approved!");
+                } else {
+                    System.out.println("❌ HOD Approval Pending!");
+                }
+                return;
+            }
+        }
+        System.out.println("❌ OutPass Not Found!");
+    }
+
+    // Method for Check-In/Check-Out
+    public static void checkInCheckOut() {
+        System.out.print("\n🔹 Enter OutPass Number: ");
+        String passNum = sc.nextLine();
+
+        for (OutPass o : outPasses) {
+            if (o.outPassNumber.equals(passNum)) {
+                if (o.wardenApproved) {
+                    System.out.print("Enter Check-In Date (YYYY-MM-DD): ");
+                    o.inDate = sc.nextLine();
+                    System.out.print("Enter Check-In Time (HH:MM AM/PM): ");
+                    o.inTime = sc.nextLine();
+                    o.status = "Completed";
+                    System.out.println("✅ Check-In Recorded!");
+                } else {
+                    System.out.println("❌ Warden Approval Pending!");
+                }
+                return;
+            }
+        }
+        System.out.println("❌ OutPass Not Found!");
     }
 
     // Method to view student details
@@ -222,31 +321,5 @@ public class outpSS {
         for (OutPass o : outPasses) {
             o.displayOutPass();
         }
-    }
-
-    // Method to apply for an OutPass
-    public static void applyOutPass() {
-        System.out.print("\n🔹 Enter Roll Number: ");
-        String roll = sc.nextLine();
-        System.out.print("Reason: ");
-        String reason = sc.nextLine();
-
-        outPasses.add(new OutPass(roll, "OP-" + (outPasses.size() + 1), "2025-03-02", "10:00 AM", reason, "Pending", "", ""));
-        System.out.println("✅ OutPass Request Submitted!");
-    }
-
-    // Method to approve an OutPass
-    public static void approveOutPass() {
-        System.out.print("\n🔹 Enter OutPass Number to Approve: ");
-        String passNum = sc.nextLine();
-
-        for (OutPass o : outPasses) {
-            if (o.outPassNumber.equals(passNum)) {
-                o.status = "Approved ✅";
-                System.out.println("✅ OutPass Approved!");
-                return;
-            }
-        }
-        System.out.println("❌ OutPass Not Found!");
     }
 }
