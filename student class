@@ -8,11 +8,12 @@ class Student {
     double cgpa;
     int attendancePercentage;
     int outpassDaysTaken;
+    boolean isInPlacement; // New field to check if the student is in placement
 
     Student(String studentName, String rollNumber, String registerNumber, String department, int dateOfBirth,
             String year, String section, int attendancePercentage, String gender, double cgpa,
             String advisorName, String studentMail, String officialMail,
-            String studentContact, String parentContact) {
+            String studentContact, String parentContact, boolean isInPlacement) {
 
         this.studentName = studentName;
         this.rollNumber = rollNumber;
@@ -30,6 +31,7 @@ class Student {
         this.studentContact = studentContact;
         this.parentContact = parentContact;
         this.outpassDaysTaken = 0;
+        this.isInPlacement = isInPlacement; // Initialize placement status
     }
 
     // Display student details
@@ -53,13 +55,15 @@ class Student {
         System.out.println("║ Student Contact: " + studentContact);
         System.out.println("║ Parent Contact : " + parentContact);
         System.out.println("║ OutPass Days   : " + outpassDaysTaken);
+        System.out.println("║ In Placement   : " + (isInPlacement ? "Yes" : "No"));
         System.out.println("╚══════════════════════════════════════════╝\n");
     }
 }
 
 class OutPass {
     String rollNumber, outPassNumber, outDate, outTime, reason, status, inDate, inTime;
-    boolean advisorApproved, hodApproved, wardenApproved;
+    boolean advisorApproved, hodApproved, wardenApproved, securityApproved;
+    boolean placementCoordinatorApproved, placementHeadApproved; // New fields for placement approvals
 
     OutPass(String rollNumber, String outPassNumber, String outDate, String outTime,
             String reason, String status, String inDate, String inTime) {
@@ -74,6 +78,9 @@ class OutPass {
         this.advisorApproved = false;
         this.hodApproved = false;
         this.wardenApproved = false;
+        this.securityApproved = false;
+        this.placementCoordinatorApproved = false;
+        this.placementHeadApproved = false;
     }
 
     // Display OutPass Details
@@ -90,6 +97,9 @@ class OutPass {
         System.out.println("║ Advisor Approved: " + (advisorApproved ? "Yes" : "No"));
         System.out.println("║ HOD Approved   : " + (hodApproved ? "Yes" : "No"));
         System.out.println("║ Warden Approved: " + (wardenApproved ? "Yes" : "No"));
+        System.out.println("║ Security Approved: " + (securityApproved ? "Yes" : "No"));
+        System.out.println("║ Placement Coordinator Approved: " + (placementCoordinatorApproved ? "Yes" : "No"));
+        System.out.println("║ Placement Head Approved: " + (placementHeadApproved ? "Yes" : "No"));
         System.out.println("║ In Date        : " + inDate);
         System.out.println("║ In Time        : " + inTime);
         System.out.println("╚══════════════════════════════════════════╝\n");
@@ -111,10 +121,13 @@ public class outpSS {
             System.out.println("║ 3️⃣  ➜ Advisor Approval                  ║");
             System.out.println("║ 4️⃣  ➜ HOD Approval                     ║");
             System.out.println("║ 5️⃣  ➜ Warden Approval                  ║");
-            System.out.println("║ 6️⃣  ➜ Check-In/Check-Out               ║");
-            System.out.println("║ 7️⃣  ➜ View Student Details             ║");
-            System.out.println("║ 8️⃣  ➜ View OutPass Details             ║");
-            System.out.println("║ 9️⃣  ➜ Exit                             ║");
+            System.out.println("║ 6️⃣  ➜ Security Approval                ║");
+            System.out.println("║ 7️⃣  ➜ Placement Coordinator Approval   ║");
+            System.out.println("║ 8️⃣  ➜ Placement Head Approval           ║");
+            System.out.println("║ 9️⃣  ➜ Check-In/Check-Out               ║");
+            System.out.println("║ 🔟  ➜ View Student Details             ║");
+            System.out.println("║ 🔟1 ➜ View OutPass Details             ║");
+            System.out.println("║ 🔟2 ➜ Exit                             ║");
             System.out.println("╚══════════════════════════════════════════╝");
             System.out.print("🔹 Enter your choice: ");
 
@@ -138,15 +151,24 @@ public class outpSS {
                     wardenApproval();
                     break;
                 case 6:
-                    checkInCheckOut();
+                    securityApproval();
                     break;
                 case 7:
-                    viewStudent();
+                    placementCoordinatorApproval();
                     break;
                 case 8:
-                    viewOutPass();
+                    placementHeadApproval();
                     break;
                 case 9:
+                    checkInCheckOut();
+                    break;
+                case 10:
+                    viewStudent();
+                    break;
+                case 11:
+                    viewOutPass();
+                    break;
+                case 12:
                     System.out.println("✅ Exiting the system... Have a great day!");
                     return;
                 default:
@@ -191,8 +213,10 @@ public class outpSS {
         String studentContact = sc.nextLine();
         System.out.print("Parent Contact: ");
         String parentContact = sc.nextLine();
+        System.out.print("Is the student in placement? (Yes/No): ");
+        boolean isInPlacement = sc.nextLine().equalsIgnoreCase("Yes");
 
-        students.add(new Student(name, rollNumber, registerNumber, department, dob, year, section, attendance, gender, cgpa, advisor, studentMail, officialMail, studentContact, parentContact));
+        students.add(new Student(name, rollNumber, registerNumber, department, dob, year, section, attendance, gender, cgpa, advisor, studentMail, officialMail, studentContact, parentContact, isInPlacement));
         System.out.println("✅ Student Registered Successfully!\n");
     }
 
@@ -279,6 +303,82 @@ public class outpSS {
         System.out.println("❌ OutPass Not Found!");
     }
 
+    // Method for Security Approval
+    public static void securityApproval() {
+        System.out.print("\n🔹 Enter OutPass Number to Approve: ");
+        String passNum = sc.nextLine();
+
+        for (OutPass o : outPasses) {
+            if (o.outPassNumber.equals(passNum)) {
+                if (o.wardenApproved) {
+                    o.securityApproved = true;
+                    o.status = "Security Approved";
+                    System.out.println("✅ Security Approved!");
+                } else {
+                    System.out.println("❌ Warden Approval Pending!");
+                }
+                return;
+            }
+        }
+        System.out.println("❌ OutPass Not Found!");
+    }
+
+    // Method for Placement Coordinator Approval
+    public static void placementCoordinatorApproval() {
+        System.out.print("\n🔹 Enter OutPass Number to Approve: ");
+        String passNum = sc.nextLine();
+
+        for (OutPass o : outPasses) {
+            if (o.outPassNumber.equals(passNum)) {
+                for (Student s : students) {
+                    if (s.rollNumber.equals(o.rollNumber) && s.isInPlacement) {
+                        System.out.print("Placement Coordinator Signature: ");
+                        String signature = sc.nextLine();
+                        if (!signature.isEmpty()) {
+                            o.placementCoordinatorApproved = true;
+                            o.status = "Placement Coordinator Approved";
+                            System.out.println("✅ Placement Coordinator Approved!");
+                        } else {
+                            System.out.println("❌ Signature Required!");
+                        }
+                        return;
+                    }
+                }
+                System.out.println("❌ Student Not in Placement!");
+                return;
+            }
+        }
+        System.out.println("❌ OutPass Not Found!");
+    }
+
+    // Method for Placement Head Approval
+    public static void placementHeadApproval() {
+        System.out.print("\n🔹 Enter OutPass Number to Approve: ");
+        String passNum = sc.nextLine();
+
+        for (OutPass o : outPasses) {
+            if (o.outPassNumber.equals(passNum)) {
+                for (Student s : students) {
+                    if (s.rollNumber.equals(o.rollNumber) && s.isInPlacement) {
+                        System.out.print("Placement Head Signature: ");
+                        String signature = sc.nextLine();
+                        if (!signature.isEmpty()) {
+                            o.placementHeadApproved = true;
+                            o.status = "Placement Head Approved";
+                            System.out.println("✅ Placement Head Approved!");
+                        } else {
+                            System.out.println("❌ Signature Required!");
+                        }
+                        return;
+                    }
+                }
+                System.out.println("❌ Student Not in Placement!");
+                return;
+            }
+        }
+        System.out.println("❌ OutPass Not Found!");
+    }
+
     // Method for Check-In/Check-Out
     public static void checkInCheckOut() {
         System.out.print("\n🔹 Enter OutPass Number: ");
@@ -286,7 +386,7 @@ public class outpSS {
 
         for (OutPass o : outPasses) {
             if (o.outPassNumber.equals(passNum)) {
-                if (o.wardenApproved) {
+                if (o.securityApproved) {
                     System.out.print("Enter Check-In Date (YYYY-MM-DD): ");
                     o.inDate = sc.nextLine();
                     System.out.print("Enter Check-In Time (HH:MM AM/PM): ");
@@ -294,7 +394,7 @@ public class outpSS {
                     o.status = "Completed";
                     System.out.println("✅ Check-In Recorded!");
                 } else {
-                    System.out.println("❌ Warden Approval Pending!");
+                    System.out.println("❌ Security Approval Pending!");
                 }
                 return;
             }
