@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
  
 class Student { 
-    String studentName, rollNumber, registerNumber, department, year, section, gender;
+    String studentName, rollNumber, registerNumber, department, year, section, gender; 
     String advisorName, studentMail, officialMail, studentContact, parentContact;
     String  dateOfBirth;  
     double cgpa;
