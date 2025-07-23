@@ -6,7 +6,7 @@ import java.util.Scanner;
 class Student { 
     String studentName, rollNumber, registerNumber, department, year, section, gender; 
     String advisorName, studentMail, officialMail, studentContact, parentContact;
-    String  dateOfBirth;   
+    String  dateOfBirth;    
     double cgpa;
     String attendancePercentage;
     int outpassDaysTaken;
